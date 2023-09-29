@@ -1,4 +1,5 @@
 import uuid
+from datetime import date
 
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.auth.models import BaseUserManager
@@ -19,6 +20,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("birth_date", date(2000, 1, 1))
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError(_("Superuser must have is_staff=True."))
@@ -38,7 +40,6 @@ class User(AbstractUser):
         _("UserType"),
         max_length=50,
         choices=UserType.choices,
-        default=UserType.COORDINATOR,
     )
 
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)

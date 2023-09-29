@@ -1,12 +1,13 @@
 from dataclasses import dataclass
-from uuid import UUID
 from datetime import date
+from typing import Optional
+from uuid import UUID
 
 
 @dataclass
 class Coordinator:
-    # id: UUID
     name: str
     email: str
     password: str
     birth_date: date
+    id: Optional[UUID] = None
