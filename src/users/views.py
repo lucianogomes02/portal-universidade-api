@@ -16,12 +16,8 @@ class CoordinatorsViewSet(ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        serializer = CoordinatorSerializer(data=request.data)
-        if serializer.is_valid():
-            coordinator_data = serializer.validated_data
-            command = RegisterCoordinator()
-            return command.handle(**coordinator_data)
-        return Response(serializer.errors, status=400)
+        command = RegisterCoordinator()
+        return command.handle(request_data=request.data)
 
     def update(self, request, pk=None, *args, **kwargs):
         coordinator_user = CoordinatorUser.objects.filter(id=pk).first()

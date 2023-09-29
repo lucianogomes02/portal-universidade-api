@@ -1,24 +1,31 @@
+from typing import Union
+
+from rest_framework.response import Response
+
 from src.users.domain.entities import Coordinator
 from src.users.models import CoordinatorUser, User
+from src.users.service.serializers import CoordinatorSerializer
 
 
 class CoordinatorService:
     @staticmethod
-    def register_coordinator(name, email, password, birth_date) -> CoordinatorUser:
-        coordinator = Coordinator(
-            name=name, email=email, password=password, birth_date=birth_date
-        )
-        # validade coordinator here
-        coordinator_user = CoordinatorUser.objects.create(
-            name=name,
-            email=email,
-            birth_date=birth_date,
-            username=coordinator.email,
-            user_type=User.UserType.COORDINATOR,
-        )
-        coordinator_user.set_password(password)
-        coordinator_user.save()
-        return coordinator_user
+    def register_coordinator(request_data) -> Union[Response, CoordinatorUser]:
+        serializer = CoordinatorSerializer(data=request_data)
+        if serializer.is_valid():
+            coordinator_data = serializer.validated_data
+            coordinator = Coordinator(**coordinator_data)
+            # validade coordinator here
+            coordinator_user = CoordinatorUser.objects.create(
+                name=coordinator.name,
+                email=coordinator.email,
+                birth_date=coordinator.birth_date,
+                username=coordinator.email,
+                user_type=User.UserType.COORDINATOR,
+            )
+            coordinator_user.set_password(coordinator.password)
+            coordinator_user.save()
+            return coordinator_user
+        return Response(serializer.errors, status=400)
 
     @staticmethod
     def unregister_coordinator(coordinator_id):

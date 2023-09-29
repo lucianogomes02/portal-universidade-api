@@ -2,7 +2,6 @@ import abc
 
 from django.core.management import BaseCommand
 from rest_framework.response import Response
-
 from src.users.service.services import CoordinatorService
 
 
@@ -18,23 +17,13 @@ class Command(abc.ABC, BaseCommand):
 
 class RegisterCoordinator(Command):
     def add_arguments(self, parser):
-        parser.add_argument("name", type=str)
-        parser.add_argument("email", type=str)
-        parser.add_argument("password", type=str)
-        parser.add_argument("birth_date", type=str)
+        parser.add_argument("request_data", type=dict)
 
     def handle(self, *args, **kwargs) -> Response:
-        name = kwargs["name"]
-        email = kwargs["email"]
-        password = kwargs["password"]
-        birth_date = kwargs["birth_date"]
-
-        CoordinatorService.register_coordinator(name, email, password, birth_date)
-
+        request_data = kwargs["request_data"]
+        CoordinatorService.register_coordinator(request_data)
         success_response: str = "Coordenador criado com sucesso"
-
         self.stdout.write(self.style.SUCCESS("Coordenador criado com sucesso"))
-
         return Response({"message": success_response})
 
 
@@ -45,9 +34,6 @@ class UnregisterCoordinator(Command):
     def handle(self, *args, **kwargs) -> Response:
         coordinator_id = kwargs["coordinator_id"]
         CoordinatorService.unregister_coordinator(coordinator_id=coordinator_id)
-
         success_response: str = "Coordenador excluído com sucesso"
-
         self.stdout.write(self.style.SUCCESS("Coordenador excluído com sucesso"))
-
         return Response({"message": success_response})
