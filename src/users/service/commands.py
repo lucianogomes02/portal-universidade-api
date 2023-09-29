@@ -36,3 +36,18 @@ class RegisterCoordinator(Command):
         self.stdout.write(self.style.SUCCESS("Coordenador criado com sucesso"))
 
         return Response({"message": success_response})
+
+
+class UnregisterCoordinator(Command):
+    def add_arguments(self, parser):
+        parser.add_argument("coordinator_id", type=str)
+
+    def handle(self, *args, **kwargs) -> Response:
+        coordinator_id = kwargs["coordinator_id"]
+        CoordinatorService.unregister_coordinator(coordinator_id=coordinator_id)
+
+        success_response: str = "Coordenador excluído com sucesso"
+
+        self.stdout.write(self.style.SUCCESS("Coordenador excluído com sucesso"))
+
+        return Response({"message": success_response})

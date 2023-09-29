@@ -19,3 +19,9 @@ class CoordinatorService:
         coordinator_user.set_password(password)
         coordinator_user.save()
         return coordinator_user
+
+    @staticmethod
+    def unregister_coordinator(coordinator_id):
+        coordinator = CoordinatorUser.objects.filter(id=coordinator_id).first()
+        if coordinator:
+            coordinator.delete()
