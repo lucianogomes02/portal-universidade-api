@@ -1,19 +1,7 @@
-import abc
-
-from django.core.management import BaseCommand
 from rest_framework.response import Response
 
-from src.users.service.services import CoordinatorService
-
-
-class Command(abc.ABC, BaseCommand):
-    @abc.abstractmethod
-    def add_arguments(self, parser):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def handle(self, *args, **options):
-        raise NotImplementedError()
+from src.libs.command import Command
+from src.users.service.coordinator.services import CoordinatorService
 
 
 class SearchForCoordinator(Command):

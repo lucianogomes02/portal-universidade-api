@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from src.users.models import Coordinator
 from src.users.repository.coordinator_repository import CoordinatorRepository
-from src.users.service.serializers import CoordinatorSerializer
+from src.users.service.coordinator.serializers import CoordinatorSerializer
 
 
 class CoordinatorService:

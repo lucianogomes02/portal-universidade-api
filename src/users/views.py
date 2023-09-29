@@ -1,13 +1,13 @@
 from rest_framework.viewsets import ModelViewSet
 
 from src.users.repository.coordinator_repository import CoordinatorRepository
-from src.users.service.commands import (
+from src.users.service.coordinator.commands import (
     RegisterCoordinator,
     UnregisterCoordinator,
     ChangeCoordinatorRegistry,
     SearchForCoordinator,
 )
-from src.users.service.serializers import CoordinatorSerializer
+from src.users.service.coordinator.serializers import CoordinatorSerializer
 
 
 class CoordinatorsViewSet(ModelViewSet):
