@@ -1,12 +1,22 @@
 from rest_framework import serializers
 
+from src.users.domain.entities import Coordinator
 from src.users.models import CoordinatorUser
 
 
-class CoordinatorSerializer(serializers.ModelSerializer):
+class CoordinatorSerializer(serializers.Serializer):
     id = serializers.UUIDField(read_only=True)
-    password = serializers.CharField(write_only=True)
+    name = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    password = serializers.CharField(write_only=True, required=False)
+    birth_date = serializers.DateField(required=False)
 
-    class Meta:
-        model = CoordinatorUser
-        fields = ["id", "name", "email", "password", "birth_date"]
+    def create(self, validated_data):
+        return Coordinator(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance

@@ -33,8 +33,8 @@ class CoordinatorsViewSet(ModelViewSet):
         return Response(serializer.errors, status=400)
 
     def update(self, request, pk=None, *args, **kwargs):
-        coordinator = CoordinatorUser.objects.filter(id=pk).first()
-        serializer = CoordinatorSerializer(coordinator, data=request.data)
+        coordinator_user = CoordinatorUser.objects.filter(id=pk).first()
+        serializer = CoordinatorSerializer(coordinator_user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Coordenador atualizado com sucesso"})
