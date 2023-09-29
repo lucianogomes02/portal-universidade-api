@@ -2,7 +2,7 @@ from typing import Union
 
 from rest_framework.response import Response
 
-from src.users.models import CoordinatorUser
+from src.users.models import Coordinator
 from src.users.repository.coordinator_repository import CoordinatorRepository
 from src.users.service.serializers import CoordinatorSerializer
 
@@ -19,7 +19,7 @@ class CoordinatorService:
         return Response(serializer.data)
 
     @staticmethod
-    def register_coordinator(request_data) -> Union[Response, CoordinatorUser]:
+    def register_coordinator(request_data) -> Union[Response, Coordinator]:
         serializer = CoordinatorSerializer(data=request_data)
         if serializer.is_valid():
             coordinator_data = serializer.validated_data
@@ -32,7 +32,7 @@ class CoordinatorService:
     @staticmethod
     def change_coordinator_registry(
         coordinator_id, request_data
-    ) -> Union[Response, CoordinatorUser]:
+    ) -> Union[Response, Coordinator]:
         coordinator = CoordinatorRepository().search_by_id(
             coordinator_id=coordinator_id
         )

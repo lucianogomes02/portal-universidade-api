@@ -67,7 +67,7 @@ class CoordinatorManager(BaseUserManager):
         )
 
 
-class CoordinatorUser(User):
+class Coordinator(User):
     objects = CoordinatorManager()
 
     class Meta:
@@ -76,5 +76,27 @@ class CoordinatorUser(User):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.user_type = User.UserType.COORDINATOR
+        self.set_password(self.password)
+        return super().save(*args, **kwargs)
+
+
+class ProfessorManager(BaseUserManager):
+    def get_queryset(self, *args, **kwargs):
+        return (
+            super()
+            .get_queryset(*args, **kwargs)
+            .filter(user_type=User.UserType.PROFESSOR)
+        )
+
+
+class Professor(User):
+    objects = CoordinatorManager()
+
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.user_type = User.UserType.PROFESSOR
         self.set_password(self.password)
         return super().save(*args, **kwargs)

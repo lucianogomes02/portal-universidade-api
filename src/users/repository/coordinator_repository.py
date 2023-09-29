@@ -4,7 +4,7 @@ from uuid import UUID
 
 from django.db.models import QuerySet
 
-from src.users.models import CoordinatorUser, User
+from src.users.models import Coordinator, User
 
 
 class Repository(abc.ABC):
@@ -31,17 +31,17 @@ class Repository(abc.ABC):
 
 class CoordinatorRepository(Repository):
     def __init__(self):
-        self.coordinator_user = CoordinatorUser
+        self.coordinator_user = Coordinator
 
-    def search_all_objects(self) -> QuerySet[CoordinatorUser]:
+    def search_all_objects(self) -> QuerySet[Coordinator]:
         return self.coordinator_user.objects.all()
 
-    def search_by_id(self, coordinator_id: UUID) -> CoordinatorUser:
+    def search_by_id(self, coordinator_id: UUID) -> Coordinator:
         return self.coordinator_user.objects.filter(id=coordinator_id).first()
 
-    def save(self, coordinator_data: Dict) -> CoordinatorUser:
+    def save(self, coordinator_data: Dict) -> Coordinator:
         coordinator_json = {**coordinator_data}
-        coordinator = CoordinatorUser.objects.create(
+        coordinator = Coordinator.objects.create(
             **coordinator_data,
             username=coordinator_json.get("email"),
             user_type=User.UserType.COORDINATOR
@@ -50,9 +50,7 @@ class CoordinatorRepository(Repository):
         coordinator.save()
         return coordinator
 
-    def update(
-        self, coordinator: CoordinatorUser, updated_data: Dict
-    ) -> CoordinatorUser:
+    def update(self, coordinator: Coordinator, updated_data: Dict) -> Coordinator:
         for key, value in updated_data.items():
             if hasattr(coordinator, key) and getattr(coordinator, key) != value:
                 setattr(coordinator, key, value)
@@ -64,5 +62,5 @@ class CoordinatorRepository(Repository):
         coordinator.save()
         return coordinator
 
-    def delete(self, coordinator: CoordinatorUser):
+    def delete(self, coordinator: Coordinator):
         coordinator.delete()

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from src.users.models import CoordinatorUser
+from src.users.models import Coordinator
 
 
 class CoordinatorSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class CoordinatorSerializer(serializers.ModelSerializer):
     birth_date = serializers.DateField(required=False)
 
     class Meta:
-        model = CoordinatorUser
+        model = Coordinator
         fields = ["id", "name", "email", "password", "birth_date"]
 
     def validate(self, data):
