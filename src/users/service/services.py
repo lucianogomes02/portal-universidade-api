@@ -28,6 +28,17 @@ class CoordinatorService:
         return Response(serializer.errors, status=400)
 
     @staticmethod
+    def change_coordinator_registry(
+        coordinator_id, request_data
+    ) -> Union[Response, CoordinatorUser]:
+        coordinator_user = CoordinatorUser.objects.filter(id=coordinator_id).first()
+        serializer = CoordinatorSerializer(coordinator_user, data=request_data)
+        if serializer.is_valid():
+            serializer.save()
+            return coordinator_user
+        return Response(serializer.errors, status=400)
+
+    @staticmethod
     def unregister_coordinator(coordinator_id):
         coordinator = CoordinatorUser.objects.filter(id=coordinator_id).first()
         if coordinator:

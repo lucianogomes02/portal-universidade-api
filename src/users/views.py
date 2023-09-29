@@ -2,7 +2,11 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from src.users.models import CoordinatorUser
-from src.users.service.commands import RegisterCoordinator, UnregisterCoordinator
+from src.users.service.commands import (
+    RegisterCoordinator,
+    UnregisterCoordinator,
+    ChangeCoordinatorRegistry,
+)
 from src.users.service.serializers import CoordinatorSerializer
 
 
@@ -20,12 +24,8 @@ class CoordinatorsViewSet(ModelViewSet):
         return command.handle(request_data=request.data)
 
     def update(self, request, pk=None, *args, **kwargs):
-        coordinator_user = CoordinatorUser.objects.filter(id=pk).first()
-        serializer = CoordinatorSerializer(coordinator_user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Coordenador atualizado com sucesso"})
-        return Response(serializer.errors, status=400)
+        command = ChangeCoordinatorRegistry()
+        return command.handle(coordinator_id=pk, request_data=request.data)
 
     def destroy(self, request, pk=None, *args, **kwargs):
         command = UnregisterCoordinator()
