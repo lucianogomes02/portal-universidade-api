@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from src.users.models import CoordinatorUser
@@ -6,6 +5,7 @@ from src.users.service.commands import (
     RegisterCoordinator,
     UnregisterCoordinator,
     ChangeCoordinatorRegistry,
+    SearchForCoordinator,
 )
 from src.users.service.serializers import CoordinatorSerializer
 
@@ -15,9 +15,8 @@ class CoordinatorsViewSet(ModelViewSet):
     serializer_class = CoordinatorSerializer
 
     def retrieve(self, request, pk=None, *args, **kwargs):
-        coordinator = CoordinatorUser.objects.filter(id=pk).first()
-        serializer = CoordinatorSerializer(coordinator)
-        return Response(serializer.data)
+        command = SearchForCoordinator()
+        return command.handle(coordinator_id=pk)
 
     def create(self, request, *args, **kwargs):
         command = RegisterCoordinator()

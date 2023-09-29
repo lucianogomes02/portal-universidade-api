@@ -17,6 +17,18 @@ class Command(abc.ABC, BaseCommand):
         raise NotImplementedError()
 
 
+class SearchForCoordinator(Command):
+    def add_arguments(self, parser):
+        parser.add_argument("coordinator_id", type=str)
+
+    def handle(self, *args, **kwargs) -> Response:
+        coordinator_id = kwargs["coordinator_id"]
+        coordinator_search_response = CoordinatorService.search_for_coordinator(
+            coordinator_id=coordinator_id
+        )
+        return coordinator_search_response
+
+
 class RegisterCoordinator(Command):
     def add_arguments(self, parser):
         parser.add_argument("request_data", type=dict)
