@@ -1,6 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
 
-from src.users.models import CoordinatorUser
 from src.users.repository.coordinator_repository import CoordinatorRepository
 from src.users.service.commands import (
     RegisterCoordinator,
