@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from src.users.domain.entities import Coordinator
-from src.users.models import CoordinatorUser
 
 
 class CoordinatorSerializer(serializers.Serializer):
