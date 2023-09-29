@@ -90,7 +90,7 @@ class ProfessorManager(BaseUserManager):
 
 
 class Professor(User):
-    objects = CoordinatorManager()
+    objects = ProfessorManager()
 
     class Meta:
         proxy = True
