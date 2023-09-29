@@ -39,7 +39,7 @@ class CoordinatorRepository(Repository):
     def search_by_id(self, coordinator_id: UUID) -> CoordinatorUser:
         return self.coordinator_user.objects.filter(id=coordinator_id).first()
 
-    def save(self, coordinator_data: Dict):
+    def save(self, coordinator_data: Dict) -> CoordinatorUser:
         coordinator_json = {**coordinator_data}
         coordinator = CoordinatorUser.objects.create(
             **coordinator_data,
@@ -50,7 +50,7 @@ class CoordinatorRepository(Repository):
         coordinator.save()
         return coordinator
 
-    def update(self, coordinator: CoordinatorUser, updated_data: Dict):
+    def update(self, coordinator: CoordinatorUser, updated_data: Dict) -> CoordinatorUser:
         for key, value in updated_data.items():
             if hasattr(coordinator, key) and getattr(coordinator, key) != value:
                 setattr(coordinator, key, value)

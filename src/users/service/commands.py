@@ -47,7 +47,7 @@ class ChangeCoordinatorRegistry(Command):
         parser.add_argument("coordinator_id", type=str)
         parser.add_argument("request_data", type=dict)
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args, **kwargs) -> Response:
         coordinator_id = kwargs["coordinator_id"]
         request_data = kwargs["request_data"]
         coordinator_user = CoordinatorService.change_coordinator_registry(
