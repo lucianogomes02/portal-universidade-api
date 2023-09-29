@@ -9,36 +9,36 @@ from src.users.models import Professor, User
 
 class ProfessorRepository(Repository):
     def __init__(self):
-        self.coordinator_user = Professor
+        self.professor_user = Professor
 
     def search_all_objects(self) -> QuerySet[Professor]:
-        return self.coordinator_user.objects.all()
+        return self.professor_user.objects.all()
 
-    def search_by_id(self, coordinator_id: UUID) -> Professor:
-        return self.coordinator_user.objects.filter(id=coordinator_id).first()
+    def search_by_id(self, professor_id: UUID) -> Professor:
+        return self.professor_user.objects.filter(id=professor_id).first()
 
-    def save(self, coordinator_data: Dict) -> Professor:
-        coordinator_json = {**coordinator_data}
-        coordinator = Professor.objects.create(
-            **coordinator_data,
-            username=coordinator_json.get("email"),
+    def save(self, professor_data: Dict) -> Professor:
+        professor_json = {**professor_data}
+        professor = Professor.objects.create(
+            **professor_data,
+            username=professor_json.get("email"),
             user_type=User.UserType.PROFESSOR
         )
-        coordinator.set_password(coordinator.password)
-        coordinator.save()
-        return coordinator
+        professor.set_password(professor.password)
+        professor.save()
+        return professor
 
-    def update(self, coordinator: Professor, updated_data: Dict) -> Professor:
+    def update(self, professor: Professor, updated_data: Dict) -> Professor:
         for key, value in updated_data.items():
-            if hasattr(coordinator, key) and getattr(coordinator, key) != value:
-                setattr(coordinator, key, value)
+            if hasattr(professor, key) and getattr(professor, key) != value:
+                setattr(professor, key, value)
 
         new_password = updated_data.get("password")
         if new_password:
-            coordinator.set_password(new_password)
+            professor.set_password(new_password)
 
-        coordinator.save()
-        return coordinator
+        professor.save()
+        return professor
 
-    def delete(self, coordinator: Professor):
-        coordinator.delete()
+    def delete(self, professor: Professor):
+        professor.delete()
