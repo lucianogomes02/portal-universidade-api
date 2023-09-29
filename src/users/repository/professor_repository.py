@@ -4,31 +4,31 @@ from uuid import UUID
 from django.db.models import QuerySet
 
 from src.libs.repository import Repository
-from src.users.models import Coordinator, User
+from src.users.models import Professor, User
 
 
-class CoordinatorRepository(Repository):
+class ProfessorRepository(Repository):
     def __init__(self):
-        self.coordinator_user = Coordinator
+        self.coordinator_user = Professor
 
-    def search_all_objects(self) -> QuerySet[Coordinator]:
+    def search_all_objects(self) -> QuerySet[Professor]:
         return self.coordinator_user.objects.all()
 
-    def search_by_id(self, coordinator_id: UUID) -> Coordinator:
+    def search_by_id(self, coordinator_id: UUID) -> Professor:
         return self.coordinator_user.objects.filter(id=coordinator_id).first()
 
-    def save(self, coordinator_data: Dict) -> Coordinator:
+    def save(self, coordinator_data: Dict) -> Professor:
         coordinator_json = {**coordinator_data}
-        coordinator = Coordinator.objects.create(
+        coordinator = Professor.objects.create(
             **coordinator_data,
             username=coordinator_json.get("email"),
-            user_type=User.UserType.COORDINATOR
+            user_type=User.UserType.PROFESSOR
         )
         coordinator.set_password(coordinator.password)
         coordinator.save()
         return coordinator
 
-    def update(self, coordinator: Coordinator, updated_data: Dict) -> Coordinator:
+    def update(self, coordinator: Professor, updated_data: Dict) -> Professor:
         for key, value in updated_data.items():
             if hasattr(coordinator, key) and getattr(coordinator, key) != value:
                 setattr(coordinator, key, value)
@@ -40,5 +40,5 @@ class CoordinatorRepository(Repository):
         coordinator.save()
         return coordinator
 
-    def delete(self, coordinator: Coordinator):
+    def delete(self, coordinator: Professor):
         coordinator.delete()
