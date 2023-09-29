@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
 from src.users.models import CoordinatorUser
+from src.users.repository.coordinator_repository import CoordinatorRepository
 from src.users.service.commands import (
     RegisterCoordinator,
     UnregisterCoordinator,
@@ -11,7 +12,7 @@ from src.users.service.serializers import CoordinatorSerializer
 
 
 class CoordinatorsViewSet(ModelViewSet):
-    queryset = CoordinatorUser.objects.all()
+    queryset = CoordinatorRepository().search_all_objects()
     serializer_class = CoordinatorSerializer
 
     def retrieve(self, request, pk=None, *args, **kwargs):

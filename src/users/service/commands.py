@@ -3,7 +3,6 @@ import abc
 from django.core.management import BaseCommand
 from rest_framework.response import Response
 
-from src.users.models import CoordinatorUser
 from src.users.service.services import CoordinatorService
 
 
@@ -36,7 +35,7 @@ class RegisterCoordinator(Command):
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
         coordinator_user = CoordinatorService.register_coordinator(request_data)
-        if coordinator_user is not CoordinatorUser:
+        if coordinator_user is Response:
             return coordinator_user
         success_response: str = "Coordenador criado com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
