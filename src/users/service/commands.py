@@ -35,7 +35,7 @@ class RegisterCoordinator(Command):
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
         coordinator_user = CoordinatorService.register_coordinator(request_data)
-        if coordinator_user is Response:
+        if isinstance(coordinator_user, Response):
             return coordinator_user
         success_response: str = "Coordenador criado com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
@@ -53,7 +53,7 @@ class ChangeCoordinatorRegistry(Command):
         coordinator_user = CoordinatorService.change_coordinator_registry(
             coordinator_id=coordinator_id, request_data=request_data
         )
-        if coordinator_user is Response:
+        if isinstance(coordinator_user, Response):
             return coordinator_user
         success_response: str = "Coordenador atualizado com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))

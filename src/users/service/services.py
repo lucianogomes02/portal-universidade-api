@@ -36,7 +36,7 @@ class CoordinatorService:
         coordinator = CoordinatorRepository().search_by_id(
             coordinator_id=coordinator_id
         )
-        serializer = CoordinatorSerializer(coordinator, data=request_data)
+        serializer = CoordinatorSerializer(instance=coordinator, data=request_data)
         if serializer.is_valid():
             coordinator_changed = CoordinatorRepository().update(
                 coordinator=coordinator, updated_data=request_data

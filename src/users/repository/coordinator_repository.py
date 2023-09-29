@@ -50,7 +50,9 @@ class CoordinatorRepository(Repository):
         coordinator.save()
         return coordinator
 
-    def update(self, coordinator: CoordinatorUser, updated_data: Dict) -> CoordinatorUser:
+    def update(
+        self, coordinator: CoordinatorUser, updated_data: Dict
+    ) -> CoordinatorUser:
         for key, value in updated_data.items():
             if hasattr(coordinator, key) and getattr(coordinator, key) != value:
                 setattr(coordinator, key, value)

@@ -13,3 +13,15 @@ class CoordinatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoordinatorUser
         fields = ["id", "name", "email", "password", "birth_date"]
+
+    def validate(self, data):
+        if self.instance:
+            return data
+
+        model_fields = self.Meta.fields.copy()
+        model_fields.pop(0)
+        for field in model_fields:
+            if field not in data:
+                raise serializers.ValidationError({field: "Este campo é obrigatório."})
+
+        return data
