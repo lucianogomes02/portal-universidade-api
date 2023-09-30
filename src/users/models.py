@@ -73,11 +73,11 @@ class Coordinator(User):
     class Meta:
         proxy = True
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.user_type = User.UserType.COORDINATOR
-        self.set_password(self.password)
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.user_type = User.UserType.COORDINATOR
+    #     self.set_password(self.password)
+    #     return super().save(*args, **kwargs)
 
 
 class ProfessorManager(BaseUserManager):
@@ -95,11 +95,11 @@ class Professor(User):
     class Meta:
         proxy = True
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.user_type = User.UserType.PROFESSOR
-        self.set_password(self.password)
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.user_type = User.UserType.PROFESSOR
+    #     self.set_password(self.password)
+    #     return super().save(*args, **kwargs)
 
 
 class StudentManager(BaseUserManager):
@@ -117,8 +117,8 @@ class Student(User):
     class Meta:
         proxy = True
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.user_type = User.UserType.STUDENT
-        self.set_password(self.password)
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.user_type = User.UserType.STUDENT
+    #     self.set_password(self.password)
+    #     return super().save(*args, **kwargs)
