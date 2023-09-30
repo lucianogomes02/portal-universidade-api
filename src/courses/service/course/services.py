@@ -1,10 +1,12 @@
-from typing import Union
+from typing import Union, Tuple
 
 from rest_framework.response import Response
 
 from src.courses.models import Course
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.serializers import CourseSerializer
+from src.users.models import Student
+from src.users.repository.student_repository import StudentRepository
 
 
 class CourseService:
@@ -35,6 +37,30 @@ class CourseService:
             )
             return course_changed
         return Response(serializer.errors, status=400)
+
+    @staticmethod
+    def enroll_student_to_course(
+        course_id, student_id
+    ) -> Union[Response, Tuple[Course, Student]]:
+        course = CourseRepository().search_by_id(course_id=course_id)
+        student = StudentRepository().search_by_id(student_id=student_id)
+
+        if not course or not student:
+            return Response(
+                {
+                    "message": "Erro ao matrícular Aluno à Disciplina. Aluno ou Disciplina não encontrados"
+                }
+            )
+
+        existing_students = list(course.students.all())
+
+        if not existing_students:
+            course.students.set(student.id)
+        if student.id not in existing_students:
+            course.students.add(student_id)
+
+        CourseRepository().update(course)
+        return course, student
 
     @staticmethod
     def unregister_course(course_id):

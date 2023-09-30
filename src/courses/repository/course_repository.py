@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 from uuid import UUID
 
 from django.db.models import QuerySet
@@ -24,21 +24,17 @@ class CourseRepository(Repository):
             workload=course_data.get("workload"),
             professor=course_data.get("professor"),
         )
-        course.students.set(course_data.get("students"))
+        if course_data.get("students"):
+            course.students.set(course_data.get("students"))
         course.save()
         return course
 
-    def update(self, course: Course, updated_data: Dict) -> Course:
-        for key, value in updated_data.items():
-            if hasattr(course, key) and getattr(course, key) != value:
-                if key == "students":
-                    existing_students = list(course.students.all())
-                    new_students_ids = updated_data.get("students", [])
-                    for student_id in new_students_ids:
-                        if student_id not in existing_students:
-                            course.students.add(student_id)
-                else:
+    def update(self, course: Course, updated_data: Optional[Dict] = None) -> Course:
+        if updated_data:
+            for key, value in updated_data.items():
+                if hasattr(course, key) and getattr(course, key) != value:
                     setattr(course, key, value)
+        course.save()
         return course
 
     def delete(self, course: Course):

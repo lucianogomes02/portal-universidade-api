@@ -1,5 +1,6 @@
 from rest_framework import permissions
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.mixins import UpdateModelMixin
+from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.commands import (
@@ -7,6 +8,7 @@ from src.courses.service.course.commands import (
     ChangeCourseRegistry,
     UnregisterCourse,
     SearchForCourse,
+    EnrollStudentToCourse,
 )
 from src.courses.service.course.serializers import CourseSerializer
 
@@ -31,3 +33,11 @@ class CoursesViewSet(ModelViewSet):
     def destroy(self, request, pk=None, *args, **kwargs):
         command = UnregisterCourse()
         return command.handle(course_id=pk)
+
+
+class EnrollStudentToCourseViewSet(UpdateModelMixin, ViewSet):
+    def update(self, request, pk=None, *args, **kwargs):
+        command = EnrollStudentToCourse()
+        return command.handle(
+            course_id=pk, student_id=request.data.get("student_id", None)
+        )
