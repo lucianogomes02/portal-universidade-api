@@ -32,10 +32,11 @@ class CourseRepository(Repository):
         for key, value in updated_data.items():
             if hasattr(course, key) and getattr(course, key) != value:
                 if key == "students":
-                    students = Student.objects.filter(id__in=updated_data.get(key))
-                    if not students:
-                        raise ValueError("Alunos selecionados não foram encontrados")
-                    course.students.set(students)
+                    existing_students = list(course.students.all())
+                    new_students_ids = updated_data.get("students", [])
+                    for student_id in new_students_ids:
+                        if student_id not in existing_students:
+                            course.students.add(student_id)
                 else:
                     setattr(course, key, value)
         return course

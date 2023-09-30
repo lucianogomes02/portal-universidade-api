@@ -23,7 +23,7 @@ class RegisterCourse(Command):
         course = CourseService.register_course(request_data)
         if isinstance(course, Response):
             return course
-        success_response: str = "Disciplina criado com sucesso"
+        success_response: str = "Disciplina criada com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
         return Response({"message": success_response})
 
@@ -41,7 +41,7 @@ class ChangeCourseRegistry(Command):
         )
         if isinstance(course, Response):
             return course
-        success_response: str = "Disciplina atualizado com sucesso"
+        success_response: str = "Disciplina atualizada com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
         return Response({"message": success_response})
 
@@ -53,6 +53,6 @@ class UnregisterCourse(Command):
     def handle(self, *args, **kwargs) -> Response:
         course_id = kwargs["course_id"]
         CourseService.unregister_course(course_id=course_id)
-        success_response: str = "Disciplina excluído com sucesso"
+        success_response: str = "Disciplina excluída com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
         return Response({"message": success_response})
