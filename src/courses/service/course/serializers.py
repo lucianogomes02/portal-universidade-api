@@ -40,3 +40,8 @@ class CourseSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({field: "Este campo é obrigatório."})
 
         return data
+
+
+class EnrollmentSerializer(serializers.Serializer):
+    course_id = serializers.UUIDField(read_only=True)
+    student_ids = serializers.ListField(child=serializers.UUIDField(), read_only=True)
