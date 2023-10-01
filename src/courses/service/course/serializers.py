@@ -34,6 +34,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
         model_fields = self.Meta.fields.copy()
         model_fields.pop(0)
+        model_fields.pop(3)
         for field in model_fields:
             if field not in data:
                 raise serializers.ValidationError({field: "Este campo é obrigatório."})
