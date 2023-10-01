@@ -19,20 +19,18 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ["id", "name", "workload", "professor", "students"]
 
-    def validate_workload(self):
-        if self.workload is not None and (
-            not isinstance(self.workload, int) or self.workload <= 0
-        ):
+    def validate_workload(self, workload):
+        if workload is not None and (not isinstance(workload, int) or workload <= 0):
             raise serializers.ValidationError(
                 "A carga horária deve ser um número inteiro maior que zero."
             )
-        return self.workload
+        return workload
 
     def validate(self, data):
         if self.instance:
             return data
 
-        self.validate_workload()
+        self.validate_workload(data.get("workload"))
 
         model_fields = self.Meta.fields.copy()
         model_fields.pop(0)

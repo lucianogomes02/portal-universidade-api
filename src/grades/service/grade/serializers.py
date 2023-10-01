@@ -23,18 +23,18 @@ class GradeSerializer(serializers.ModelSerializer):
         model = Grade
         fields = ["id", "course", "professor", "student", "value"]
 
-    def validate_grade_value(self):
-        if self.value is not None and (
-            not isinstance(self.value, int) or self.value <= 0
-        ):
-            raise serializers.ValidationError("A Nota deve ser maior ou igual a 0")
-        return self.value
+    def validate_grade_value(self, value):
+        if not value and (not isinstance(value, float) or value <= 0):
+            raise serializers.ValidationError(
+                "A Nota deve ser maior ou igual a 0 e decimal"
+            )
+        return value
 
     def validate(self, data):
         if self.instance:
             return data
 
-        self.validate_grade_value()
+        self.validate_grade_value(data.get("value"))
 
         model_fields = self.Meta.fields.copy()
         model_fields.pop(0)

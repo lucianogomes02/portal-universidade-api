@@ -22,7 +22,6 @@ class GradeRepository(Repository):
 
     def save(self, grade_data: Dict) -> Grade:
         grade = Grade.objects.create(
-            name=grade_data.get("name"),
             course=grade_data.get("course"),
             professor=grade_data.get("professor"),
             student=grade_data.get("student"),

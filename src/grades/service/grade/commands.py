@@ -25,7 +25,7 @@ class RegisterGrade(Command):
         grade = GradeService.register_grade(request_data)
         if isinstance(grade, Response):
             return grade
-        success_response: str = "Nota criada com sucesso"
+        success_response: str = "Nota registrada com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
         return Response({"message": success_response})
 
