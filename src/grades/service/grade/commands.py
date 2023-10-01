@@ -30,7 +30,7 @@ class RegisterGrade(Command):
         return Response({"message": success_response})
 
 
-class ChangeGrade(Command):
+class ChangeStudentsGrade(Command):
     def add_arguments(self, parser):
         parser.add_argument("grade_id", type=str)
         parser.add_argument("request_data", type=dict)

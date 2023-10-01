@@ -43,13 +43,20 @@ class GradeService:
 
     @staticmethod
     def change_grade(grade_id: UUID, request_data: Dict) -> Union[Response, Grade]:
-        grade = GradeRepository().search_by_id(grade_id=grade_id)
+        if not request_data.get("student", None):
+            return Response(
+                {"message": "Necessário informar o Aluno que deseja alterar a Nota"}
+            )
+        grade = GradeRepository().search_by_id_and_student(
+            grade_id=grade_id, student_id=request_data.get("student")
+        )
         if not grade:
-            raise ValueError("Nota não foi encontrada para alteração")
-        serializer = GradeSerializer(instance=grade, data=request_data)
+            return Response({"message": "Nota não foi encontrada para alteração"})
+        new_grade_value = {"value": request_data.get("value")}
+        serializer = GradeSerializer(instance=grade, data=new_grade_value)
         if serializer.is_valid():
             grade_changed = GradeRepository().update(
-                grade=grade, updated_data=request_data
+                grade=grade, updated_data=new_grade_value
             )
             return grade_changed
         return Response(serializer.errors, status=400)

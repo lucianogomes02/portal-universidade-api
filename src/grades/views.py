@@ -5,7 +5,7 @@ from src.grades.repository.grade_repository import GradeRepository
 from src.grades.service.grade.commands import (
     SearchGradeForStudent,
     RegisterGrade,
-    ChangeGrade,
+    ChangeStudentsGrade,
     UnregisterGrade,
 )
 from src.grades.service.grade.serializers import GradeSerializer
@@ -25,7 +25,7 @@ class GradesViewSet(ModelViewSet):
         return command.handle(request_data=request.data)
 
     def update(self, request, pk=None, *args, **kwargs):
-        command = ChangeGrade()
+        command = ChangeStudentsGrade()
         return command.handle(grade_id=pk, request_data=request.data)
 
     def destroy(self, request, pk=None, *args, **kwargs):

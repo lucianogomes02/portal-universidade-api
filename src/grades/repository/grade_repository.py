@@ -20,6 +20,9 @@ class GradeRepository(Repository):
     def search_by_student(self, student_id: UUID) -> Grade:
         return self.grade.objects.filter(student=student_id).first()
 
+    def search_by_id_and_student(self, grade_id: UUID, student_id: UUID) -> Grade:
+        return self.grade.objects.filter(id=grade_id, student=student_id).first()
+
     def save(self, grade_data: Dict) -> Grade:
         grade = Grade.objects.create(
             course=grade_data.get("course"),
