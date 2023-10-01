@@ -1,5 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
-
+from src.libs.views import BaseUsersModelViewSet
 from src.users.repository.coordinator_repository import CoordinatorRepository
 from src.users.repository.professor_repository import ProfessorRepository
 from src.users.repository.student_repository import StudentRepository
@@ -26,7 +25,7 @@ from src.users.service.student.commands import (
 from src.users.service.student.serializers import StudentSerializer
 
 
-class CoordinatorsViewSet(ModelViewSet):
+class CoordinatorsViewSet(BaseUsersModelViewSet):
     queryset = CoordinatorRepository().search_all_objects()
     serializer_class = CoordinatorSerializer
 
@@ -47,7 +46,7 @@ class CoordinatorsViewSet(ModelViewSet):
         return command.handle(coordinator_id=pk)
 
 
-class ProfessorsViewSet(ModelViewSet):
+class ProfessorsViewSet(BaseUsersModelViewSet):
     queryset = ProfessorRepository().search_all_objects()
     serializer_class = ProfessorSerializer
 
@@ -68,7 +67,7 @@ class ProfessorsViewSet(ModelViewSet):
         return command.handle(professor_id=pk)
 
 
-class StudentsViewSet(ModelViewSet):
+class StudentsViewSet(BaseUsersModelViewSet):
     queryset = StudentRepository().search_all_objects()
     serializer_class = StudentSerializer
 
