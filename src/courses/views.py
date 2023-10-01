@@ -1,8 +1,8 @@
-from rest_framework import permissions, status
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import UpdateModelMixin, ListModelMixin
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework.viewsets import ViewSet
 
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.commands import (
@@ -16,9 +16,10 @@ from src.courses.service.course.serializers import (
     CourseSerializer,
     EnrollmentSerializer,
 )
+from src.libs.views import BaseCourseModelViewSet
 
 
-class CoursesViewSet(ModelViewSet):
+class CoursesViewSet(BaseCourseModelViewSet):
     queryset = CourseRepository().search_all_objects()
     serializer_class = CourseSerializer
 
