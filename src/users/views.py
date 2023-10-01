@@ -1,4 +1,3 @@
-from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 
 from src.users.repository.coordinator_repository import CoordinatorRepository
@@ -30,7 +29,6 @@ from src.users.service.student.serializers import StudentSerializer
 class CoordinatorsViewSet(ModelViewSet):
     queryset = CoordinatorRepository().search_all_objects()
     serializer_class = CoordinatorSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         command = SearchForCoordinator()
@@ -52,7 +50,6 @@ class CoordinatorsViewSet(ModelViewSet):
 class ProfessorsViewSet(ModelViewSet):
     queryset = ProfessorRepository().search_all_objects()
     serializer_class = ProfessorSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         command = SearchForProfessor()
@@ -74,7 +71,6 @@ class ProfessorsViewSet(ModelViewSet):
 class StudentsViewSet(ModelViewSet):
     queryset = StudentRepository().search_all_objects()
     serializer_class = StudentSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         command = SearchForStudent()

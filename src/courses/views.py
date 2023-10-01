@@ -21,7 +21,6 @@ from src.courses.service.course.serializers import (
 class CoursesViewSet(ModelViewSet):
     queryset = CourseRepository().search_all_objects()
     serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         command = SearchForCourse()

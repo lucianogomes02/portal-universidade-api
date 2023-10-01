@@ -14,7 +14,6 @@ from src.grades.service.grade.serializers import GradeSerializer
 class GradesViewSet(ModelViewSet):
     queryset = GradeRepository().search_all_objects()
     serializer_class = GradeSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, pk=None, *args, **kwargs):
         command = SearchGradeForStudent()
