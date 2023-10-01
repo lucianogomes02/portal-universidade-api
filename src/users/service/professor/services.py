@@ -43,3 +43,5 @@ class ProfessorService:
         professor = ProfessorRepository().search_by_id(professor_id=professor_id)
         if professor:
             ProfessorRepository().delete(professor=professor)
+            return Response({"message": "Professor removido com sucesso"})
+        return Response({"message": "Professor não encontrado"})

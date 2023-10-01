@@ -54,7 +54,6 @@ class UnregisterProfessor(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         professor_id = kwargs["professor_id"]
-        ProfessorService.unregister_professor(professor_id=professor_id)
-        success_response: str = "Professor excluído com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        response = ProfessorService.unregister_professor(professor_id=professor_id)
+        self.stdout.write(self.style.SUCCESS(response.get("message")))
+        return Response({"message": response.get("message")})
