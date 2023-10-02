@@ -35,10 +35,21 @@ class GradeService:
                 )
             )
             if course and student_enrolled_to_course:
-                grade_data = serializer.validated_data
-                GradeRepository().save(grade_data=grade_data)
+                grade_is_registered = GradeRepository().search_by_student_and_course(
+                    course_id=course.id, student_id=request_data.get("student")
+                )
+                if not grade_is_registered:
+                    grade_data = serializer.validated_data
+                    GradeRepository().save(grade_data=grade_data)
+                    return Response(
+                        {"message": "Nota regsitrada com sucesso"},
+                        status.HTTP_201_CREATED,
+                    )
                 return Response(
-                    {"message": "Nota regsitrada com sucesso"}, status.HTTP_201_CREATED
+                    {
+                        "message": f"Nota do Aluno já foi registada para a Disciplina {course.name}",
+                    },
+                    status.HTTP_406_NOT_ACCEPTABLE,
                 )
             return Response(
                 {
