@@ -21,7 +21,7 @@ class EnrollmentService:
         if not course:
             return Response(
                 {
-                    "message": "Erro ao matrícular Aluno à Disciplina. Disciplina não encontrada"
+                    "error": "Erro ao matrícular Aluno à Disciplina. Disciplina não encontrada"
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
@@ -29,7 +29,7 @@ class EnrollmentService:
         if not student:
             return Response(
                 {
-                    "message": "Erro ao matrícular Aluno à Disciplina. Aluno não encontrado(a)"
+                    "error": "Erro ao matrícular Aluno à Disciplina. Aluno não encontrado(a)"
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
@@ -43,7 +43,7 @@ class EnrollmentService:
         if student_enrolled_to_course:
             return Response(
                 {
-                    "message": f"Aluno {student.name} já está matrículado à Disciplina {course.name}"
+                    "error": f"Aluno {student.name} já está matrículado à Disciplina {course.name}"
                 },
                 status=status.HTTP_406_NOT_ACCEPTABLE,
             )
@@ -51,7 +51,7 @@ class EnrollmentService:
         EnrollmentRepository().save({"student": student, "course": course})
         return Response(
             {
-                "message": f"Aluno {student.name} matrículado à Disciplina {course.name} com sucesso"
+                "success": f"Aluno {student.name} matrículado à Disciplina {course.name} com sucesso"
             },
             status=status.HTTP_201_CREATED,
         )

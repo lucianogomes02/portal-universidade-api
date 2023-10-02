@@ -17,7 +17,7 @@ class CourseService:
                 {"error": "Disciplina não encontrada"}, status.HTTP_404_NOT_FOUND
             )
         serializer = CourseSerializer(course)
-        return Response(serializer.data, status.HTTP_200_OK)
+        return Response({"success": serializer.data}, status.HTTP_200_OK)
 
     @staticmethod
     def register_course(request_data) -> Union[Response, Course]:
@@ -55,7 +55,7 @@ class CourseService:
         if course:
             CourseRepository().delete(course=course)
             return Response(
-                {"message": "Disciplina removida com sucesso"},
+                {"success": "Disciplina removida com sucesso"},
                 status=status.HTTP_202_ACCEPTED,
             )
         return Response(
