@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 from django.test import TestCase
+from rest_framework import status
 
 from src.users.models import Coordinator, Student, Professor
 from src.users.service.coordinator.services import CoordinatorService
@@ -73,5 +74,5 @@ class UsersServiceTestCase(TestCase):
 
         response = ProfessorService.unregister_professor(professor_id=professor.id)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         self.assertEqual(response.data["message"], "Professor removido com sucesso")
