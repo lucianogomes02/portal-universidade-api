@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from src.courses.service.course.services import CourseService
+from src.enrollments.service.services import EnrollmentService
 from src.libs.command import Command
 
 
@@ -13,7 +13,7 @@ class EnrollStudentToCourse(Command):
     def handle(self, *args, **kwargs):
         student_id = args[0].get("student")
         course_id = args[0].get("course")
-        course, student = CourseService.enroll_student_to_course(
+        course, student = EnrollmentService.enroll_student_to_course(
             course_id=course_id, student_id=student_id
         )
         if isinstance(course, Response):
