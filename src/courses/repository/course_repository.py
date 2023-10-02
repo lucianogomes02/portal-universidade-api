@@ -18,12 +18,8 @@ class CourseRepository(Repository):
     def search_by_id(self, course_id: UUID) -> Course:
         return self.course.objects.filter(id=course_id).first()
 
-    def search_by_id_professor_and_student(
-        self, course_id: UUID, professor_id: UUID, student_id: UUID
-    ) -> Course:
-        return self.course.objects.filter(
-            id=course_id, professor=professor_id, students__id=student_id
-        ).first()
+    def search_by_id_and_professor(self, course_id: UUID, professor_id: UUID) -> Course:
+        return self.course.objects.filter(id=course_id, professor=professor_id).first()
 
     def save(self, course_data: Dict) -> Course:
         course = Course.objects.create(

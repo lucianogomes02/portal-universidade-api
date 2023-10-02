@@ -22,12 +22,7 @@ class RegisterGrade(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
-        grade = GradeService.register_grade(request_data)
-        if isinstance(grade, Response):
-            return grade
-        success_response: str = "Nota registrada com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return GradeService.register_grade(request_data)
 
 
 class ChangeStudentsGrade(Command):
@@ -38,12 +33,7 @@ class ChangeStudentsGrade(Command):
     def handle(self, *args, **kwargs) -> Response:
         grade_id = kwargs["grade_id"]
         request_data = kwargs["request_data"]
-        grade = GradeService.change_grade(grade_id=grade_id, request_data=request_data)
-        if isinstance(grade, Response):
-            return grade
-        success_response: str = "Nota atualizada com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return GradeService.change_grade(grade_id=grade_id, request_data=request_data)
 
 
 class UnregisterGrade(Command):
@@ -52,7 +42,4 @@ class UnregisterGrade(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         grade_id = kwargs["grade_id"]
-        GradeService.unregister_grade(grade_id=grade_id)
-        success_response: str = "Nota excluída com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return GradeService.unregister_grade(grade_id=grade_id)
