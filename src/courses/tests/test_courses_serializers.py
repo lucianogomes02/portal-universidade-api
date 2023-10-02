@@ -3,7 +3,6 @@ from django.test import TestCase
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.serializers import CourseSerializer
 from src.users.repository.professor_repository import ProfessorRepository
-from src.users.repository.student_repository import StudentRepository
 
 
 class CoursesSerializerTestCase(TestCase):
@@ -17,19 +16,9 @@ class CoursesSerializerTestCase(TestCase):
             }
         )
 
-        self.student = StudentRepository().save(
-            {
-                "name": "Test Student",
-                "email": "studenttest@example.com",
-                "password": "1234",
-                "birth_date": "2000-01-01",
-            }
-        )
-
         self.course_data = {
             "name": "Course Test",
             "professor": self.professor.id,
-            "students": [self.student.id],
             "workload": 100,
         }
 
@@ -37,7 +26,6 @@ class CoursesSerializerTestCase(TestCase):
             {
                 "name": "Course Test",
                 "professor": self.professor,
-                "students": [self.student],
                 "workload": 100,
             }
         )
@@ -59,7 +47,6 @@ class CoursesSerializerTestCase(TestCase):
         invalid_data = {
             "name": "Course Test",
             "professor": self.professor.id,
-            "students": [self.student.id],
             "workload": -10,
         }
         serializer = CourseSerializer(data=invalid_data)
@@ -73,7 +60,6 @@ class CoursesSerializerTestCase(TestCase):
     def test_serializer_must_not_be_valid_due_missing_professor_field(self):
         invalid_data = {
             "name": "Course Test",
-            "students": [self.student.id],
             "workload": 100,
         }
         serializer = CourseSerializer(data=invalid_data)

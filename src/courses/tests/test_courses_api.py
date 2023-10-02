@@ -5,7 +5,6 @@ from rest_framework.test import APITestCase
 from src.courses.repository.course_repository import CourseRepository
 from src.users.models import User
 from src.users.repository.professor_repository import ProfessorRepository
-from src.users.repository.student_repository import StudentRepository
 
 
 class CoursesAPITestCase(APITestCase):
@@ -29,26 +28,10 @@ class CoursesAPITestCase(APITestCase):
             }
         )
 
-        self.student = StudentRepository().save(
-            {
-                "name": "Test Student",
-                "email": "studenttest@example.com",
-                "password": "1234",
-                "birth_date": "2000-01-01",
-            }
-        )
-
-        course_data = {
-            "name": "Course Test",
-            "professor": self.professor,
-            "workload": 100,
-        }
-
         self.course = CourseRepository().save(
             {
                 "name": "Course Test",
                 "professor": self.professor,
-                "students": [self.student],
                 "workload": 100,
             }
         )

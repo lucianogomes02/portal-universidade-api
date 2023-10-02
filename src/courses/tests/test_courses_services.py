@@ -7,7 +7,6 @@ from src.courses.models import Course
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.services import CourseService
 from src.users.repository.professor_repository import ProfessorRepository
-from src.users.repository.student_repository import StudentRepository
 
 
 class CoursesServiceTestCase(TestCase):
@@ -21,20 +20,10 @@ class CoursesServiceTestCase(TestCase):
             }
         )
 
-        self.student = StudentRepository().save(
-            {
-                "name": "Test Student",
-                "email": "studenttest@example.com",
-                "password": "1234",
-                "birth_date": "2000-01-01",
-            }
-        )
-
         self.course = CourseRepository().save(
             {
                 "name": "Course Test",
                 "professor": self.professor,
-                "students": [self.student],
                 "workload": 100,
             }
         )
@@ -85,7 +74,7 @@ class CoursesServiceTestCase(TestCase):
             }
         )
 
-        course = CourseService.register_course(self.course_data)
+        self.course = CourseService.register_course(self.course_data)
 
         self.course_repository.return_value.search_by_id.return_value = self.course
 
