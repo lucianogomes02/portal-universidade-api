@@ -50,7 +50,9 @@ class CoursesAPITestCase(APITestCase):
         response = self.client.post(self.courses_list, data=course_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data.get("message"), "Disciplina criada com sucesso")
+        self.assertEqual(
+            response.data.get("success"), "Disciplina cadastrada com sucesso"
+        )
 
     def test_put_course(self):
         course_change_data = {
@@ -59,14 +61,14 @@ class CoursesAPITestCase(APITestCase):
         response = self.client.put(
             f"/api/courses/{self.course.id}/", data=course_change_data
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         self.assertEqual(
-            response.data.get("message"), "Disciplina atualizada com sucesso"
+            response.data.get("success"), "Disciplina alterada com sucesso"
         )
 
     def test_delete_course(self):
         response = self.client.delete(f"/api/courses/{self.course.id}/")
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         self.assertEqual(
-            response.data.get("message"), "Disciplina removida com sucesso"
+            response.data.get("success"), "Disciplina removida com sucesso"
         )

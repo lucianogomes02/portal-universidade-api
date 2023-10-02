@@ -29,7 +29,7 @@ class CoursesServiceTestCase(TestCase):
         )
 
         self.course_data = {
-            "name": "Course Test",
+            "name": "Course Test 2",
             "professor": self.professor.id,
             "workload": 100,
         }
@@ -43,7 +43,7 @@ class CoursesServiceTestCase(TestCase):
         response = CourseService.search_for_course(course_id=self.course.id)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["name"], "Course Test")
+        self.assertEqual(response.data["success"]["name"], "Course Test")
 
     def test_register_course(self):
         CourseRepository = Mock()
@@ -51,7 +51,7 @@ class CoursesServiceTestCase(TestCase):
 
         self.course_repository.return_value.save.return_value = Course(
             **{
-                "name": "Course Test",
+                "name": "Course Test 2",
                 "professor": self.professor,
                 "workload": 100,
             }
@@ -59,26 +59,16 @@ class CoursesServiceTestCase(TestCase):
 
         response = CourseService.register_course(self.course_data)
 
-        self.assertTrue(isinstance(response, Course))
-        self.assertEqual(response.name, "Course Test")
+        self.assertTrue(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["success"], "Disciplina cadastrada com sucesso")
 
     def test_unregister_course(self):
         CourseRepository = Mock()
         self.course_repository = CourseRepository
-
-        self.course_repository.return_value.save.return_value = Course(
-            **{
-                "name": "Course Test",
-                "professor": self.professor,
-                "workload": 100,
-            }
-        )
-
-        self.course = CourseService.register_course(self.course_data)
 
         self.course_repository.return_value.search_by_id.return_value = self.course
 
         response = CourseService.unregister_course(course_id=self.course.id)
 
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-        self.assertEqual(response.data["message"], "Disciplina removida com sucesso")
+        self.assertEqual(response.data["success"], "Disciplina removida com sucesso")
