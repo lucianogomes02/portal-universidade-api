@@ -1,3 +1,5 @@
+from _decimal import Decimal
+
 from rest_framework import serializers
 
 from src.courses.repository.course_repository import CourseRepository
@@ -24,9 +26,9 @@ class GradeSerializer(serializers.ModelSerializer):
         fields = ["id", "course", "professor", "student", "value"]
 
     def validate_grade_value(self, value):
-        if not value and (not isinstance(value, float) or value <= 0):
+        if not value or (not isinstance(value, Decimal) or value <= 0):
             raise serializers.ValidationError(
-                "A Nota deve ser maior ou igual a 0 e decimal"
+                {"value": "A Nota deve ser maior ou igual a 0 e decimal"}
             )
         return value
 
