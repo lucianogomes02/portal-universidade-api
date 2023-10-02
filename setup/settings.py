@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "src.users",
     "src.courses",
     "src.grades",
+    "src.enrollments",
 ]
 
 MIDDLEWARE = [

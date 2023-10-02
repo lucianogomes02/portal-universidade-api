@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from src.courses.models import Course
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.serializers import CourseSerializer
+from src.enrollments.repository.enrollment_repository import EnrollmentRepository
 from src.users.models import Student
 from src.users.repository.student_repository import StudentRepository
 
@@ -46,21 +47,23 @@ class CourseService:
         course = CourseRepository().search_by_id(course_id=course_id)
         student = StudentRepository().search_by_id(student_id=student_id)
 
-        if not course or not student:
+        if not course:
             return Response(
                 {
-                    "message": "Erro ao matrícular Aluno à Disciplina. Aluno ou Disciplina não encontrados"
-                }
+                    "message": "Erro ao matrícular Aluno à Disciplina. Disciplina não encontrada"
+                },
+                status=status.HTTP_404_NOT_FOUND,
             )
 
-        existing_students = list(course.students.all())
+        if not student:
+            return Response(
+                {
+                    "message": "Erro ao matrícular Aluno à Disciplina. Aluno não encontrado(a)"
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
-        if not existing_students:
-            course.students.set(student.id)
-        if student.id not in existing_students:
-            course.students.add(student_id)
-
-        CourseRepository().update(course)
+        EnrollmentRepository().save({"student": student, "course": course})
         return course, student
 
     @staticmethod

@@ -12,7 +12,6 @@ class Course(models.Model):
     professor = models.ForeignKey(
         Professor, on_delete=models.CASCADE, related_name="professors_courses"
     )
-    students = models.ManyToManyField(Student, related_name="students_courses")
 
     def __str__(self):
         return self.name

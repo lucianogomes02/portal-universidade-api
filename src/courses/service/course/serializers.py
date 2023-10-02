@@ -11,13 +11,10 @@ class CourseSerializer(serializers.ModelSerializer):
     professor = serializers.PrimaryKeyRelatedField(
         queryset=Professor.objects.all(), required=False
     )
-    students = serializers.SlugRelatedField(
-        many=True, queryset=Student.objects.all(), slug_field="id", required=False
-    )
 
     class Meta:
         model = Course
-        fields = ["id", "name", "workload", "professor", "students"]
+        fields = ["id", "name", "workload", "professor"]
 
     def validate_workload(self, workload):
         if workload is not None and (not isinstance(workload, int) or workload <= 0):
@@ -34,14 +31,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
         model_fields = self.Meta.fields.copy()
         model_fields.pop(0)
-        model_fields.pop(3)
         for field in model_fields:
             if field not in data:
                 raise serializers.ValidationError({field: "Este campo é obrigatório."})
 
         return data
-
-
-class EnrollmentSerializer(serializers.Serializer):
-    course_id = serializers.UUIDField(read_only=True)
-    student_ids = serializers.ListField(child=serializers.UUIDField(), read_only=True)

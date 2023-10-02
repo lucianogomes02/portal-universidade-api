@@ -47,26 +47,6 @@ class ChangeCourseRegistry(Command):
         return Response({"message": success_response})
 
 
-class EnrollStudentToCourse(Command):
-    def add_arguments(self, parser):
-        parser.add_argument("course_id", type=str)
-        parser.add_argument("student_id", type=dict)
-
-    def handle(self, *args, **kwargs):
-        student_id = kwargs["student_id"]
-        course_id = kwargs["course_id"]
-        course, student = CourseService.enroll_student_to_course(
-            course_id=course_id, student_id=student_id
-        )
-        if isinstance(course, Response):
-            return course
-        success_response: str = (
-            f"Aluno {student.name} matrículado à Disciplina {course.name} com sucesso"
-        )
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
-
-
 class UnregisterCourse(Command):
     def add_arguments(self, parser):
         parser.add_argument("course_id", type=str)
