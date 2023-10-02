@@ -1,5 +1,6 @@
 from typing import Union, Tuple
 
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.courses.models import Course
@@ -67,3 +68,11 @@ class CourseService:
         course = CourseRepository().search_by_id(course_id=course_id)
         if course:
             CourseRepository().delete(course=course)
+            return Response(
+                {"message": "Disciplina removida com sucesso"},
+                status=status.HTTP_202_ACCEPTED,
+            )
+        return Response(
+            {"message": "Disciplina não encontrada"},
+            status=status.HTTP_404_NOT_FOUND,
+        )

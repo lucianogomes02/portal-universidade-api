@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 
-from src.libs.command import Command
 from src.courses.service.course.services import CourseService
+from src.libs.command import Command
 
 
 class SearchForCourse(Command):
@@ -72,7 +72,4 @@ class UnregisterCourse(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         course_id = kwargs["course_id"]
-        CourseService.unregister_course(course_id=course_id)
-        success_response: str = "Disciplina excluída com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return CourseService.unregister_course(course_id=course_id)
