@@ -37,6 +37,11 @@ class CourseService:
     @staticmethod
     def change_course_registry(course_id, request_data) -> Union[Response, Course]:
         course = CourseRepository().search_by_id(course_id=course_id)
+        if not course:
+            return Response(
+                {"message": "Disciplina não encontrada"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         serializer = CourseSerializer(instance=course, data=request_data)
         if serializer.is_valid():
             CourseRepository().update(course=course, updated_data=request_data)

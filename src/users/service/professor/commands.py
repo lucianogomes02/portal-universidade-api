@@ -11,10 +11,7 @@ class SearchForProfessor(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         professor_id = kwargs["professor_id"]
-        professor_search_response = ProfessorService.search_for_professor(
-            professor_id=professor_id
-        )
-        return professor_search_response
+        return ProfessorService.search_for_professor(professor_id=professor_id)
 
 
 class RegisterProfessor(Command):
@@ -23,12 +20,7 @@ class RegisterProfessor(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
-        professor_user = ProfessorService.register_professor(request_data)
-        if isinstance(professor_user, Response):
-            return professor_user
-        success_response: str = "Professor criado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
+        return ProfessorService.register_professor(request_data)
 
 
 class ChangeProfessorRegistry(Command):
@@ -39,14 +31,9 @@ class ChangeProfessorRegistry(Command):
     def handle(self, *args, **kwargs) -> Response:
         professor_id = kwargs["professor_id"]
         request_data = kwargs["request_data"]
-        professor_user = ProfessorService.change_professor_registry(
+        return ProfessorService.change_professor_registry(
             professor_id=professor_id, request_data=request_data
         )
-        if isinstance(professor_user, Response):
-            return professor_user
-        success_response: str = "Professor atualizado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
 
 
 class UnregisterProfessor(Command):

@@ -11,10 +11,7 @@ class SearchForCoordinator(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         coordinator_id = kwargs["coordinator_id"]
-        coordinator_search_response = CoordinatorService.search_for_coordinator(
-            coordinator_id=coordinator_id
-        )
-        return coordinator_search_response
+        return CoordinatorService.search_for_coordinator(coordinator_id=coordinator_id)
 
 
 class RegisterCoordinator(Command):
@@ -23,12 +20,7 @@ class RegisterCoordinator(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
-        coordinator_user = CoordinatorService.register_coordinator(request_data)
-        if isinstance(coordinator_user, Response):
-            return coordinator_user
-        success_response: str = "Coordenador criado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
+        return CoordinatorService.register_coordinator(request_data)
 
 
 class ChangeCoordinatorRegistry(Command):
@@ -39,14 +31,9 @@ class ChangeCoordinatorRegistry(Command):
     def handle(self, *args, **kwargs) -> Response:
         coordinator_id = kwargs["coordinator_id"]
         request_data = kwargs["request_data"]
-        coordinator_user = CoordinatorService.change_coordinator_registry(
+        return CoordinatorService.change_coordinator_registry(
             coordinator_id=coordinator_id, request_data=request_data
         )
-        if isinstance(coordinator_user, Response):
-            return coordinator_user
-        success_response: str = "Coordenador atualizado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
 
 
 class UnregisterCoordinator(Command):

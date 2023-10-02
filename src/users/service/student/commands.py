@@ -1,4 +1,3 @@
-from rest_framework import status
 from rest_framework.response import Response
 
 from src.libs.command import Command
@@ -23,12 +22,7 @@ class RegisterStudent(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         request_data = kwargs["request_data"]
-        student_user = StudentService.register_student(request_data)
-        if isinstance(student_user, Response):
-            return student_user
-        success_response: str = "Aluno criado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
+        return StudentService.register_student(request_data)
 
 
 class ChangeStudentRegistry(Command):
@@ -39,14 +33,9 @@ class ChangeStudentRegistry(Command):
     def handle(self, *args, **kwargs) -> Response:
         student_id = kwargs["student_id"]
         request_data = kwargs["request_data"]
-        student_user = StudentService.change_student_registry(
+        return StudentService.change_student_registry(
             student_id=student_id, request_data=request_data
         )
-        if isinstance(student_user, Response):
-            return student_user
-        success_response: str = "Aluno atualizado com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
 
 
 class UnregisterStudent(Command):
