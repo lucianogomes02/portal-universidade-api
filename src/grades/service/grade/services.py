@@ -16,7 +16,10 @@ class GradeService:
     def search_grade_for_student(student_id: UUID) -> Response:
         grade = GradeRepository().search_by_student(student_id=student_id)
         if not grade:
-            return Response({"message": "Nota do Aluno não foi encontrada"}, status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"message": "Nota do Aluno não foi encontrada"},
+                status.HTTP_404_NOT_FOUND,
+            )
         serializer = GradeSerializer(grade)
         return Response({"success": serializer.data}, status.HTTP_200_OK)
 
@@ -91,6 +94,4 @@ class GradeService:
             return Response(
                 {"success": "Nota excluída com sucesso"}, status.HTTP_202_ACCEPTED
             )
-        return Response(
-            {"error": "Nota não foi encontrada"}, status.HTTP_404_NOT_FOUND
-        )
+        return Response({"error": "Nota não foi encontrada"}, status.HTTP_404_NOT_FOUND)
