@@ -22,20 +22,30 @@ class CourseService:
         serializer = CourseSerializer(data=request_data)
         if serializer.is_valid():
             course_data = serializer.validated_data
-            course = CourseRepository().save(course_data=course_data)
-            return course
-        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+            CourseRepository().save(course_data=course_data)
+            return Response(
+                {"success": "Disciplina cadastrada com sucesso"},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            {"error": "Dados inválidos para cadastro de Disciplina"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     @staticmethod
     def change_course_registry(course_id, request_data) -> Union[Response, Course]:
         course = CourseRepository().search_by_id(course_id=course_id)
         serializer = CourseSerializer(instance=course, data=request_data)
         if serializer.is_valid():
-            course_changed = CourseRepository().update(
-                course=course, updated_data=request_data
+            CourseRepository().update(course=course, updated_data=request_data)
+            return Response(
+                {"success": "Disciplina alterada com sucesso"},
+                status=status.HTTP_202_ACCEPTED,
             )
-            return course_changed
-        return Response(serializer.errors, status=400)
+        return Response(
+            {"error": "Dados inválidos para alteração de Disciplina"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     @staticmethod
     def unregister_course(course_id):
