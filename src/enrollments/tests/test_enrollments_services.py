@@ -60,7 +60,7 @@ class EnrollmentServiceTestCase(TestCase):
         response = EnrollmentService.enroll_student_to_course(**self.enrollment_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
-            response.data.get("message"),
+            response.data.get("success"),
             f"Aluno {self.student.name} matrículado à Disciplina {self.course.name} com sucesso",
         )
 
@@ -77,6 +77,6 @@ class EnrollmentServiceTestCase(TestCase):
         response = EnrollmentService.enroll_student_to_course(**self.enrollment_data)
         self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
         self.assertEqual(
-            response.data.get("message"),
+            response.data.get("error"),
             f"Aluno {self.student.name} já está matrículado à Disciplina {self.course.name}",
         )

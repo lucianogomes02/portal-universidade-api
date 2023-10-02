@@ -67,7 +67,7 @@ class GradesAPITestCase(APITestCase):
         response = self.client.post(self.grades_list, data=self.grade_data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data.get("message"), "Nota regsitrada com sucesso")
+        self.assertEqual(response.data.get("success"), "Nota regsitrada com sucesso")
 
     def test_put_course(self):
         self.client.post(self.grades_list, data=self.grade_data)
@@ -80,4 +80,4 @@ class GradesAPITestCase(APITestCase):
         }
         response = self.client.put(f"/api/grades/{grade.id}/", data=course_change_data)
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-        self.assertEqual(response.data.get("message"), "Nota foi alterada com sucesso")
+        self.assertEqual(response.data.get("success"), "Nota foi alterada com sucesso")

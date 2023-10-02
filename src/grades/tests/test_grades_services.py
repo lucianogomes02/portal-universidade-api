@@ -65,7 +65,7 @@ class GradeServiceTestCase(TestCase):
         response = GradeService.register_grade(self.grade_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
-            response.data.get("message"),
+            response.data.get("success"),
             "Nota regsitrada com sucesso",
         )
 
@@ -88,6 +88,6 @@ class GradeServiceTestCase(TestCase):
         response = GradeService.register_grade(self.grade_data)
         self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
         self.assertEqual(
-            response.data.get("message"),
+            response.data.get("error"),
             f"Nota do Aluno já foi registada para a Disciplina {self.course.name}",
         )

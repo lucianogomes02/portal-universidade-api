@@ -67,6 +67,6 @@ class EnrollmentsAPITestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_406_NOT_ACCEPTABLE)
         self.assertEqual(
-            response.data.get("message"),
+            response.data.get("error"),
             f"Aluno {self.student.name} já está matrículado à Disciplina {self.course.name}",
         )
