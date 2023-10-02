@@ -8,7 +8,7 @@ from src.users.service.professor.services import ProfessorService
 from src.users.service.student.services import StudentService
 
 
-class UsersServiceTest(TestCase):
+class UsersServiceTestCase(TestCase):
     def setUp(self):
         CoordinatorRepository = Mock()
         ProfessorRepository = Mock()
