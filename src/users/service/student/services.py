@@ -1,5 +1,6 @@
 from typing import Union
 
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.users.models import Student
@@ -41,3 +42,10 @@ class StudentService:
         student = StudentRepository().search_by_id(student_id=student_id)
         if student:
             StudentRepository().delete(student=student)
+            return Response(
+                {"message": "Aluno removido com sucesso"},
+                status=status.HTTP_202_ACCEPTED,
+            )
+        return Response(
+            {"message": "Aluno não foi encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )

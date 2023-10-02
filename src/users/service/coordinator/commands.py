@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.libs.command import Command
@@ -27,7 +28,7 @@ class RegisterCoordinator(Command):
             return coordinator_user
         success_response: str = "Coordenador criado com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
 
 
 class ChangeCoordinatorRegistry(Command):
@@ -54,7 +55,4 @@ class UnregisterCoordinator(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         coordinator_id = kwargs["coordinator_id"]
-        CoordinatorService.unregister_coordinator(coordinator_id=coordinator_id)
-        success_response: str = "Coordenador excluído com sucesso"
-        self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return CoordinatorService.unregister_coordinator(coordinator_id=coordinator_id)

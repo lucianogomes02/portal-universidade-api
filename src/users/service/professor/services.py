@@ -1,5 +1,6 @@
 from typing import Union
 
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.users.models import Professor
@@ -43,5 +44,10 @@ class ProfessorService:
         professor = ProfessorRepository().search_by_id(professor_id=professor_id)
         if professor:
             ProfessorRepository().delete(professor=professor)
-            return Response({"message": "Professor removido com sucesso"})
-        return Response({"message": "Professor não encontrado"})
+            return Response(
+                {"message": "Professor removido com sucesso"},
+                status=status.HTTP_202_ACCEPTED,
+            )
+        return Response(
+            {"message": "Professor não encontrado"}, status=status.HTTP_404_NOT_FOUND
+        )

@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.libs.command import Command
@@ -27,7 +28,7 @@ class RegisterProfessor(Command):
             return professor_user
         success_response: str = "Professor criado com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
 
 
 class ChangeProfessorRegistry(Command):
@@ -54,6 +55,4 @@ class UnregisterProfessor(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         professor_id = kwargs["professor_id"]
-        response = ProfessorService.unregister_professor(professor_id=professor_id)
-        self.stdout.write(self.style.SUCCESS(response.get("message")))
-        return Response({"message": response.get("message")})
+        return ProfessorService.unregister_professor(professor_id=professor_id)

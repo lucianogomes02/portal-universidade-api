@@ -1,5 +1,6 @@
 from typing import Union
 
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.users.models import Coordinator
@@ -36,13 +37,18 @@ class CoordinatorService:
         coordinator = CoordinatorRepository().search_by_id(
             coordinator_id=coordinator_id
         )
+        if not coordinator:
+            return Response(
+                {"message": "Coordenador não encontrado"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         serializer = CoordinatorSerializer(instance=coordinator, data=request_data)
         if serializer.is_valid():
             coordinator_changed = CoordinatorRepository().update(
                 coordinator=coordinator, updated_data=request_data
             )
             return coordinator_changed
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
     @staticmethod
     def unregister_coordinator(coordinator_id):
@@ -51,3 +57,11 @@ class CoordinatorService:
         )
         if coordinator:
             CoordinatorRepository().delete(coordinator=coordinator)
+            return Response(
+                {"message": "Coordenador removido com sucesso"},
+                status=status.HTTP_202_ACCEPTED,
+            )
+        return Response(
+            {"message": "Coordenador não foi encontrado"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
