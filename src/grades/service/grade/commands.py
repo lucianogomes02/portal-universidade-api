@@ -10,10 +10,9 @@ class SearchGradeForStudent(Command):
 
     def handle(self, *args, **kwargs) -> Response:
         student_id = kwargs["student_id"]
-        grade_search_response = GradeService.search_grade_for_student(
+        return GradeService.search_grade_for_student(
             student_id=student_id
         )
-        return grade_search_response
 
 
 class RegisterGrade(Command):

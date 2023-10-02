@@ -16,9 +16,9 @@ class GradeService:
     def search_grade_for_student(student_id: UUID) -> Response:
         grade = GradeRepository().search_by_student(student_id=student_id)
         if not grade:
-            return Response({"message": "Nota do Aluno não foi encontrada"})
+            return Response({"message": "Nota do Aluno não foi encontrada"}, status.HTTP_404_NOT_FOUND)
         serializer = GradeSerializer(grade)
-        return Response(serializer.data)
+        return Response({"success": serializer.data}, status.HTTP_200_OK)
 
     @staticmethod
     def register_grade(request_data: Dict) -> Union[Response, Grade]:
@@ -42,18 +42,18 @@ class GradeService:
                     grade_data = serializer.validated_data
                     GradeRepository().save(grade_data=grade_data)
                     return Response(
-                        {"message": "Nota regsitrada com sucesso"},
+                        {"success": "Nota regsitrada com sucesso"},
                         status.HTTP_201_CREATED,
                     )
                 return Response(
                     {
-                        "message": f"Nota do Aluno já foi registada para a Disciplina {course.name}",
+                        "error": f"Nota do Aluno já foi registada para a Disciplina {course.name}",
                     },
                     status.HTTP_406_NOT_ACCEPTABLE,
                 )
             return Response(
                 {
-                    "message": "Não foi encontrada uma Disciplina que seja "
+                    "error": "Não foi encontrada uma Disciplina que seja "
                     + "ministrada pelo Professor selecionado, ou que o Aluno selecionado esteja matrículado"
                 },
                 status.HTTP_404_NOT_FOUND,
@@ -64,14 +64,14 @@ class GradeService:
     def change_grade(grade_id: UUID, request_data: Dict) -> Union[Response, Grade]:
         if not request_data.get("student", None):
             return Response(
-                {"message": "Necessário informar o Aluno que deseja alterar a Nota"}
+                {"error": "Necessário informar o Aluno que deseja alterar a Nota"}
             )
         grade = GradeRepository().search_by_id_and_student(
             grade_id=grade_id, student_id=request_data.get("student")
         )
         if not grade:
             return Response(
-                {"message": "Nota não foi encontrada para alteração"},
+                {"error": "Nota não foi encontrada para alteração"},
                 status.HTTP_404_NOT_FOUND,
             )
         new_grade_value = {"value": request_data.get("value")}
@@ -79,7 +79,7 @@ class GradeService:
         if serializer.is_valid():
             GradeRepository().update(grade=grade, updated_data=new_grade_value)
             return Response(
-                {"message": "Nota foi alterada com sucesso"}, status.HTTP_202_ACCEPTED
+                {"success": "Nota foi alterada com sucesso"}, status.HTTP_202_ACCEPTED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -89,8 +89,8 @@ class GradeService:
         if grade:
             GradeRepository().delete(grade=grade)
             return Response(
-                {"message": "Nota excluída com sucesso"}, status.HTTP_202_ACCEPTED
+                {"success": "Nota excluída com sucesso"}, status.HTTP_202_ACCEPTED
             )
         return Response(
-            {"message": "Nota não foi encontrada"}, status.HTTP_404_NOT_FOUND
+            {"error": "Nota não foi encontrada"}, status.HTTP_404_NOT_FOUND
         )
