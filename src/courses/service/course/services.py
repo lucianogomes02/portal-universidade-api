@@ -13,9 +13,11 @@ class CourseService:
     def search_for_course(course_id) -> Response:
         course = CourseRepository().search_by_id(course_id=course_id)
         if not course:
-            return Response({"message": "Disciplina não encontrada"})
+            return Response(
+                {"error": "Disciplina não encontrada"}, status.HTTP_404_NOT_FOUND
+            )
         serializer = CourseSerializer(course)
-        return Response(serializer.data)
+        return Response(serializer.data, status.HTTP_200_OK)
 
     @staticmethod
     def register_course(request_data) -> Union[Response, Course]:
@@ -57,6 +59,6 @@ class CourseService:
                 status=status.HTTP_202_ACCEPTED,
             )
         return Response(
-            {"message": "Disciplina não encontrada"},
+            {"error": "Disciplina não encontrada"},
             status=status.HTTP_404_NOT_FOUND,
         )
