@@ -26,7 +26,7 @@ class CourseService:
             course_data = serializer.validated_data
             course = CourseRepository().save(course_data=course_data)
             return course
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
     @staticmethod
     def change_course_registry(course_id, request_data) -> Union[Response, Course]:

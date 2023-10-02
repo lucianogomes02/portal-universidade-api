@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.response import Response
 
 from src.courses.service.course.services import CourseService
@@ -25,7 +26,7 @@ class RegisterCourse(Command):
             return course
         success_response: str = "Disciplina criada com sucesso"
         self.stdout.write(self.style.SUCCESS(success_response))
-        return Response({"message": success_response})
+        return Response({"message": success_response}, status=status.HTTP_201_CREATED)
 
 
 class ChangeCourseRegistry(Command):

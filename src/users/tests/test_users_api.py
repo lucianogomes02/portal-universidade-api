@@ -97,7 +97,7 @@ class ProfessorsAPITestCase(APITestCase):
             "birth_date": "2000-01-01",
         }
 
-        self.professor_repository.return_value.save.return_value = Coordinator(
+        self.professor_repository.return_value.save.return_value = Professor(
             **professor_data
         )
 
@@ -160,9 +160,7 @@ class StudentsAPITestCase(APITestCase):
             "birth_date": "2000-01-01",
         }
 
-        self.student_repository.return_value.save.return_value = Coordinator(
-            **student_data
-        )
+        self.student_repository.return_value.save.return_value = Student(**student_data)
 
         self.student = StudentService.register_student(student_data)
 
