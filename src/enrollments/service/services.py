@@ -34,5 +34,24 @@ class EnrollmentService:
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+        student_enrolled_to_course = (
+            EnrollmentRepository().search_by_student_and_course(
+                student_id=student.id, course_id=course.id
+            )
+        )
+
+        if student_enrolled_to_course:
+            return Response(
+                {
+                    "message": f"Aluno {student.name} já está matrículado à Disciplina {course.name}"
+                },
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
+
         EnrollmentRepository().save({"student": student, "course": course})
-        return course, student
+        return Response(
+            {
+                "message": f"Aluno {student.name} matrículado à Disciplina {course.name} com sucesso"
+            },
+            status=status.HTTP_201_CREATED,
+        )
