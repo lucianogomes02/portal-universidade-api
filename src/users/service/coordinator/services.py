@@ -70,10 +70,10 @@ class CoordinatorService:
         if coordinator:
             CoordinatorRepository().delete(coordinator=coordinator)
             return Response(
-                {"message": "Coordenador removido com sucesso"},
+                {"success": "Coordenador removido com sucesso"},
                 status=status.HTTP_202_ACCEPTED,
             )
         return Response(
-            {"message": "Coordenador não foi encontrado"},
+            {"error": "Coordenador não foi encontrado"},
             status=status.HTTP_404_NOT_FOUND,
         )

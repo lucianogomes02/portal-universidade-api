@@ -4,6 +4,8 @@ from django.test import TestCase
 from rest_framework import status
 
 from src.users.models import Coordinator, Student, Professor
+from src.users.repository.coordinator_repository import CoordinatorRepository
+from src.users.repository.professor_repository import ProfessorRepository
 from src.users.service.coordinator.services import CoordinatorService
 from src.users.service.professor.services import ProfessorService
 from src.users.service.student.services import StudentService
@@ -19,27 +21,25 @@ class UsersServiceTestCase(TestCase):
         self.student_repository = CoordinatorRepository
 
     def test_search_for_coordinator(self):
-        coordinator_data = {
-            "name": "Test Coordinator",
-            "email": "coordinatortest@example.com",
-            "password": "1234",
-            "birth_date": "2000-01-01",
-        }
-
-        self.coordinator_repository.return_value.save.return_value = Coordinator(
-            **coordinator_data
+        self.coordinator = CoordinatorRepository().save(
+            {
+                "name": "Test Coordinator",
+                "email": "coordinatortest@example.com",
+                "password": "1234",
+                "birth_date": "2000-01-01",
+            }
         )
 
-        coordinator = CoordinatorService.register_coordinator(coordinator_data)
-
-        self.coordinator_repository.return_value.search_by_id.return_value = coordinator
+        self.coordinator_repository.return_value.search_by_id.return_value = (
+            self.coordinator
+        )
 
         response = CoordinatorService.search_for_coordinator(
-            coordinator_id=coordinator.id
+            coordinator_id=self.coordinator.id
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["name"], "Test Coordinator")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["success"]["name"], "Test Coordinator")
 
     def test_register_student(self):
         student_data = {
@@ -53,26 +53,24 @@ class UsersServiceTestCase(TestCase):
 
         response = StudentService.register_student(student_data)
 
-        self.assertTrue(isinstance(response, Student))
-        self.assertEqual(response.name, "Test Student")
+        self.assertTrue(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["success"], "Aluno cadastrado com sucesso")
 
     def test_unregister_professor(self):
-        professor_data = {
-            "name": "Test Professor",
-            "email": "professortest@example.com",
-            "password": "1234",
-            "birth_date": "2000-01-01",
-        }
-
-        self.professor_repository.return_value.save.return_value = Professor(
-            **professor_data
+        self.professor = ProfessorRepository().save(
+            {
+                "name": "Test Professor",
+                "email": "professortest@example.com",
+                "password": "1234",
+                "birth_date": "2000-01-01",
+            }
         )
 
-        professor = ProfessorService.register_professor(professor_data)
+        self.professor_repository.return_value.search_by_id.return_value = (
+            self.professor
+        )
 
-        self.professor_repository.return_value.search_by_id.return_value = professor
-
-        response = ProfessorService.unregister_professor(professor_id=professor.id)
+        response = ProfessorService.unregister_professor(professor_id=self.professor.id)
 
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-        self.assertEqual(response.data["message"], "Professor removido com sucesso")
+        self.assertEqual(response.data["success"], "Professor removido com sucesso")

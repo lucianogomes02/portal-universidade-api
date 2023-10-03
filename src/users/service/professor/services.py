@@ -62,9 +62,9 @@ class ProfessorService:
         if professor:
             ProfessorRepository().delete(professor=professor)
             return Response(
-                {"message": "Professor removido com sucesso"},
+                {"success": "Professor removido com sucesso"},
                 status=status.HTTP_202_ACCEPTED,
             )
         return Response(
-            {"message": "Professor não encontrado"}, status=status.HTTP_404_NOT_FOUND
+            {"error": "Professor não encontrado"}, status=status.HTTP_404_NOT_FOUND
         )

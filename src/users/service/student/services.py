@@ -46,7 +46,7 @@ class StudentService:
             StudentRepository().update(student=student, updated_data=request_data)
             return Response(
                 {"success": "Aluno alterado com sucesso"},
-                status=status.HTTP_201_CREATED,
+                status=status.HTTP_202_ACCEPTED,
             )
         return Response(
             {"error": "Dados inválidos para alteração de Aluno"},
@@ -59,9 +59,9 @@ class StudentService:
         if student:
             StudentRepository().delete(student=student)
             return Response(
-                {"message": "Aluno removido com sucesso"},
+                {"success": "Aluno removido com sucesso"},
                 status=status.HTTP_202_ACCEPTED,
             )
         return Response(
-            {"message": "Aluno não foi encontrado"}, status=status.HTTP_404_NOT_FOUND
+            {"error": "Aluno não foi encontrado"}, status=status.HTTP_404_NOT_FOUND
         )
