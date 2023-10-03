@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "src.courses",
     "src.grades",
     "src.enrollments",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
