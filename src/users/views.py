@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from src.users.models import User
 from src.users.repository.coordinator_repository import CoordinatorRepository
 from src.users.repository.professor_repository import ProfessorRepository
 from src.users.repository.student_repository import StudentRepository
@@ -33,9 +34,19 @@ from src.users.service.student.serializers import StudentSerializer
 class BaseUsersModelViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        user_id_admin = request.user.is_staff
-        if not user_id_admin:
-            queryset = queryset.filter(id=request.user.id)
+        user_is_admin = request.user.is_staff
+        user_is_coordinator = request.user.user_type == User.UserType.COORDINATOR.value
+        if not user_is_admin:
+            if user_is_coordinator:
+                queryset = queryset.filter(
+                    user_type__in=[
+                        request.user.user_type,
+                        User.UserType.PROFESSOR,
+                        User.UserType.STUDENT,
+                    ]
+                )
+            else:
+                queryset = queryset.filter(id=request.user.id)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

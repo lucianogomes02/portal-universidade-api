@@ -1,6 +1,7 @@
 from typing import Dict
 from uuid import UUID
 
+from django.contrib.auth.models import Group
 from django.db.models import QuerySet
 
 from src.libs.repository import Repository
@@ -25,6 +26,8 @@ class ProfessorRepository(Repository):
             user_type=User.UserType.PROFESSOR
         )
         professor.set_password(professor.password)
+        professor_group = Group.objects.filter(name="ProfessorGroup").first()
+        professor.groups.add(professor_group)
         professor.save()
         return professor
 

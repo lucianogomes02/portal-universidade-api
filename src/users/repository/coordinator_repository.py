@@ -1,6 +1,7 @@
 from typing import Dict
 from uuid import UUID
 
+from django.contrib.auth.models import Group
 from django.db.models import QuerySet
 
 from src.libs.repository import Repository
@@ -25,6 +26,8 @@ class CoordinatorRepository(Repository):
             user_type=User.UserType.COORDINATOR
         )
         coordinator.set_password(coordinator.password)
+        coordinator_group = Group.objects.filter(name="CoordinatorGroup").first()
+        coordinator.groups.add(coordinator_group)
         coordinator.save()
         return coordinator
 
