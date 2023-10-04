@@ -24,6 +24,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from src.users.service.auth import LoginView
+
 router = routers.DefaultRouter()
 
 schema_view = get_schema_view(
@@ -52,7 +54,7 @@ urlpatterns = [
     path("", include("src.courses.urls")),
     path("", include("src.grades.urls")),
     path("", include("src.enrollments.urls")),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/login/", LoginView.as_view(), name="custom_login"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

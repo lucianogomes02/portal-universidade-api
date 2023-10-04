@@ -1,6 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from src.users.models import User
@@ -14,7 +12,6 @@ from src.users.service.coordinator.commands import (
     SearchForCoordinator,
 )
 from src.users.service.coordinator.serializers import CoordinatorSerializer
-from src.users.service.permissions.serializers import UserPermissionsSerializer
 from src.users.service.professor.commands import (
     SearchForProfessor,
     RegisterProfessor,
@@ -118,14 +115,3 @@ class StudentsViewSet(BaseUsersModelViewSet):
     def destroy(self, request, pk=None, *args, **kwargs):
         command = UnregisterStudent()
         return command.handle(student_id=pk)
-
-
-class UserPermissionsViewSet(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
-
-    @action(detail=False, methods=["GET"])
-    def permissions(self, request):
-        user = self.request.user
-        permissions = list(user.get_all_permissions())
-        serializer = UserPermissionsSerializer({"permissions": permissions})
-        return Response(serializer.data)
