@@ -17,7 +17,7 @@ class ProfessorService:
                 {"success": "Professor não encontrado"}, status.HTTP_404_NOT_FOUND
             )
         serializer = ProfessorSerializer(professor)
-        Response({"success": serializer.data}, status.HTTP_200_OK)
+        return Response({"success": serializer.data}, status.HTTP_200_OK)
 
     @staticmethod
     def register_professor(request_data) -> Union[Response, Professor]:
