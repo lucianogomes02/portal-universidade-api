@@ -19,7 +19,7 @@ class CoordinatorSerializer(serializers.ModelSerializer):
             return data
 
         model_fields = self.Meta.fields.copy()
-        model_fields.pop(0)
+        model_fields.remove("id")
         for field in model_fields:
             if field not in data:
                 raise serializers.ValidationError({field: "Este campo é obrigatório."})
