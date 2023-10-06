@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from src.courses.models import Course
 from src.courses.repository.course_repository import CourseRepository
 from src.courses.service.course.serializers import CourseSerializer
+from src.users.repository.professor_repository import ProfessorRepository
 
 
 class CourseService:
@@ -44,6 +45,10 @@ class CourseService:
             )
         serializer = CourseSerializer(instance=course, data=request_data)
         if serializer.is_valid():
+            professor = ProfessorRepository().search_by_id(
+                professor_id=request_data.get("professor")
+            )
+            request_data["professor"] = professor
             CourseRepository().update(course=course, updated_data=request_data)
             return Response(
                 {"success": "Disciplina alterada com sucesso"},
