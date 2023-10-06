@@ -27,10 +27,10 @@ class BaseGradeModelViewSet(viewsets.ModelViewSet):
             and not request.user.user_type == User.UserType.COORDINATOR
         ):
             filtering_strategies = {
-                User.UserType.STUDENT: FilterGradeByStudent.filter_entity_based_user_type(
+                User.UserType.STUDENT.value: FilterGradeByStudent.filter_entity_based_user_type(
                     student_id=request.user.id, queryset=queryset
                 ),
-                User.UserType.PROFESSOR: FilterGradeByProfessor.filter_entity_based_user_type(
+                User.UserType.PROFESSOR.value: FilterGradeByProfessor.filter_entity_based_user_type(
                     professor_id=request.user.id, queryset=queryset
                 ),
             }
