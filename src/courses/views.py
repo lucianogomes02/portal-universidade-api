@@ -17,7 +17,6 @@ from src.users.models import User
 class BaseCourseModelViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         from src.courses.service.course.strategies import (
-            FilterCourseByStudent,
             FilterCourseByProfessor,
         )
 
@@ -28,9 +27,6 @@ class BaseCourseModelViewSet(viewsets.ModelViewSet):
             and not request.user.user_type == User.UserType.COORDINATOR
         ):
             filtering_strategies = {
-                User.UserType.STUDENT: FilterCourseByStudent.filter_entity_based_user_type(
-                    student_id=request.user.id, queryset=queryset
-                ),
                 User.UserType.PROFESSOR: FilterCourseByProfessor.filter_entity_based_user_type(
                     professor_id=request.user.id, queryset=queryset
                 ),

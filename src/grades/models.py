@@ -9,17 +9,17 @@ from src.users.models import Professor, Student
 class Grade(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name="courses_grades", editable=False
+        Course, on_delete=models.PROTECT, related_name="courses_grades", editable=False
     )
     professor = models.ForeignKey(
         Professor,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="professors_grades",
         editable=False,
     )
     student = models.ForeignKey(
         Student,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="students_grades",
         editable=False,
     )

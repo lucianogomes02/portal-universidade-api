@@ -10,7 +10,7 @@ class Course(models.Model):
     name = models.CharField(max_length=100, unique=True)
     workload = models.PositiveIntegerField()
     professor = models.ForeignKey(
-        Professor, on_delete=models.CASCADE, related_name="professors_courses"
+        Professor, on_delete=models.PROTECT, related_name="professors_courses"
     )
 
     def __str__(self):

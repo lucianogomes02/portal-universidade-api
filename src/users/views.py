@@ -42,8 +42,6 @@ class BaseUsersModelViewSet(viewsets.ModelViewSet):
                         User.UserType.STUDENT,
                     ]
                 )
-            else:
-                queryset = queryset.filter(id=request.user.id)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
